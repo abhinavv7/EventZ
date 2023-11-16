@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EventZ Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1><span>EventZ</span> Planner</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">About Us</a>
+      <a href="#">Events</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section class="plan-event">
+      <h2>Plan Your Event</h2>
+      <p>Please help us understand your event more better, kindly fill in the below details</p>
+
+      <form name="submit-to-google-sheet"  method="post">
+        <input type="text" name="eventName" placeholder="Name of the event">
+        <input type="text" name="eventDescription" placeholder="A short description of the event">
+        <input type="number" name="expectedNumberOfPeople" placeholder="Expected number of people">
+        <input type="text" name="venue" placeholder="Venue">
+        <input type="datetime-local" name="startTime" placeholder="Start time">
+        <input type="datetime-local" name="endTime" placeholder="End time">
+        <button type="submit">Plan Event</button>
+      </form>
+      <span id="msg"></span>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; EventZ Planner</p>
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxTrdU6C8kyGWrwQS45bzK81M0mgnhm4e1fA2paA1rGCQ8-nr5c53jbqVk-aFhHeFLfPQ/exec'
+    const form = document.forms['submit-to-google-sheet']
+    const msg = document.getElementById("msg")
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            msg.innerHTML = "Event Planned Successfully"
+            setTimeout(function(){
+                msg.innerHTML = ""
+            }, 5000)
+            form.reset()
+        } )
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
+
+</body>
+</html>
